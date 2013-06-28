@@ -51,11 +51,13 @@ try:
 
 
 except KeyboardInterrupt:
-	print ("ciao")
+	print ("Riposiziono i servo")
 	os.system("sudo echo 5=125 > /dev/servoblaster")
 	os.system("sudo echo 5=0 > /dev/servoblaster")
+	print ("Kill processo servod")
 	os.system("sudo killall servod")
 	#GPIO.cleanup()
 	exit(wm)
+	print ("Uscita")
 	quit()
 
