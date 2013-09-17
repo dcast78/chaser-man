@@ -27,6 +27,10 @@ GPIO.setup(11, GPIO.OUT)
 GPIO.output(11, GPIO.LOW)
 #Led Rosso
 #Lampeggia quando la camera a infrarossi rileva il led
+GPIO.setup(25, GPIO.OUT)
+GPIO.output(25, GPIO.LOW)
+#Led Blu 
+#Predisposizione con led blu per registrazione audio via bluetooth
 GPIO.setup(9, GPIO.OUT)
 GPIO.output(9, GPIO.LOW)
 
