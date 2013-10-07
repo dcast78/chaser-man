@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <bcm2835.h>
 #include <string.h>
+#include<signal.h>
 
 //CAMERA address
 #define DEVICE_ADDRESS 0x58
@@ -32,11 +33,11 @@
 
 //PIN FOR BUTTONS (FROM UP TO DOWN)
 
-//GPIO22 - PIN15 (BLACK BUTTON UP)
+//GPIO22 - PIN15 (BLACK BUTTON UP, used for shutdown command)
 #define FIRST_BUTTON_BLACK RPI_V2_GPIO_P1_15
-//GPIO27 - PIN13 (RED BUTTON)
+//GPIO27 - PIN13 (RED BUTTON, enable/disable video recording)
 #define SECOND_BUTTON_RED RPI_V2_GPIO_P1_13
-//GPIO17 - PIN11 (BLACK BUTTON DOWN)
+//GPIO17 - PIN11 (BLACK BUTTON DOWN, enable/disable vertical motor driving)
 #define THIRD_BUTTON_BLACK RPI_V2_GPIO_P1_11
 
 #define MINPOSX 10
@@ -44,6 +45,7 @@
 #define MINPOSY 100
 #define MAXPOSY 200
 #define INITPOSX 100
+//#define INITPOSX 115 
 #define INITPOSY 130
 #define STOPSERVO 0
 
@@ -72,13 +74,17 @@ t_points points;
 //fd declaration for i2c bus
 int i2c_fd;
 
+//old pos x
+int global_pos_servo_x =  INITPOSX;
+int  global_pos_servo_y = INITPOSY;
+
 int in_shutdown = FALSE; //TRUE start shutdown
 int video_mode = FALSE; // false video stop and true video on
 int servo_mode = FALSE; // FALSE  (x ok and y ok) - TRUE (x ok and y stop)
 
 int init();
-void shutdown();
-void reset_pos_servo();
+void shutdown(int old_pos_x,int old_pos_y);
+void reset_pos_servo(int type, int old_pos_x,int old_pos_y);
 void set_output_pin();
 void set_input_pin();
 uint8_t read_pin_status(int pin);
@@ -100,21 +106,33 @@ void led_white_off();
 void led_green_on();
 void led_green_off();
 
+void sig_handler(int signo)
+{
+  if (signo == SIGINT)
+    printf("received SIGINT\n");
+    reset_pos_servo(1,global_pos_servo_x,global_pos_servo_y);			// Attenzione bisogna passare la posizione attuale dei servo alla funzione
+    close(i2c_fd);
+    bcm2835_close();
+   // sleep(1);
+   // system("sudo killall servod");
+    exit;
+}
 
-void  onoff(){
-	reset_pos_servo();
+void  onoff(int type, int last_pos_servo_x, int last_pos_servo_y){
+	//reset_pos_servo();
         //led_yellow_off();
 	led_green_on();
-        reset_pos_servo();
+       // reset_pos_servo();
         sleep(1);
         led_green_off();
         led_white_on();
-        reset_pos_servo();
+    //    reset_pos_servo();
         sleep(1);
         //led_white_off();
         led_white_off();
 	led_green_on();
-        reset_pos_servo();
+	
+        reset_pos_servo(type,last_pos_servo_x,last_pos_servo_y);
         sleep(1);
 	led_green_off();
 	led_white_on();
@@ -148,6 +166,27 @@ void move_servo(int num_servo,int value){
 }
 
 
+/*void move_servo(int num_servo, int value)
+{
+   char buf[32];
+   int fd;
+ 
+       sprintf(buf, "%d=%d\n", num_servo,value);
+	printf("muovo servo in %d=%d",num_servo,value);
+       if ((fd = open("/dev/servoblaster", O_WRONLY)) >= 0) {
+          int n = strlen(buf);
+          if (write(fd, buf, n) != n)
+             fprintf(stderr, "Failed to set %s: %s\n", buf);
+          close(fd);
+	sleep(0.5);
+       } else {
+          fprintf(stderr, "Failed to open servoblaster\n");
+		sleep(0.5);
+       }
+  
+}
+*/
+
 void led_green_on(){
 	set_pin_high(GREEN_LED);
 }
@@ -178,11 +217,43 @@ void led_white_off(){
 }
 
 
-void reset_pos_servo(){
-	move_servo(5,INITPOSY); //5 FOR Y
-        move_servo(5,0);
-        move_servo(6,INITPOSX); //6 FOR X
-        move_servo(6,0);
+void reset_pos_servo(int type,int last_pos_x, int last_pos_y){
+	
+	int x=last_pos_x;
+	int y=0;
+       // printf("Parking camera from x=%d,y=%d to x=100,y=220\n",global_pos_servo_x,global_pos_servo_y);
+	if(type==0) y=220;
+	else y = last_pos_y;
+        while(1){
+		if(type==0){ 	//se è avvio sposto solo y
+			
+			if(y>130){ move_servo(5,y--);}
+			else break;
+		}else{
+			if(x>100){
+				move_servo(6,x--);
+			}else 
+				if (x<100){
+					move_servo(6,x++);
+				}
+			
+			if(y>220){
+				move_servo(5,y--);
+				}
+			else
+				if(y<220){
+					move_servo(5,y++);
+			
+			}
+			printf("x:%d, y:%d\n",x,y);
+			//if(x==100 && y==220){printf("esco"); break;}
+			if(x==100 && y==220){printf("esco\n"); break;}
+
+		}
+
+	}
+	move_servo(6,0);	// disattiva motore
+	move_servo(5,0);	// disattiva motore
 }
 
 
@@ -192,7 +263,7 @@ int init(){
 		
 		set_output_pin();
 		set_input_pin();
-		onoff();
+		onoff(0,0,0);
 		init_wiicamera_registers();
 		printf("init ok...\n");
 		sleep(2);
@@ -379,7 +450,7 @@ int calculates_position(int *diff1,int *diff2, int *old_point_p1_x, int *old_poi
         }
 
 	*diff2 = abs(*old_point_p1_y-points.p1.y);
-        if(points.p1.y > 0 && points.p1.y <= 362 && *diff2>10 &&!servo_mode){
+        if(points.p1.y > 0 && points.p1.y < 362 && *diff2>10 &&!servo_mode){
 		if(*diff2>10 && *diff2<=40)
                		*pos_servo_y = *pos_servo_y + 1;
                 if(*diff2>40 &&  *diff2<=100)
@@ -388,7 +459,7 @@ int calculates_position(int *diff1,int *diff2, int *old_point_p1_x, int *old_poi
                         *pos_servo_y = *pos_servo_y + 5;
                 *old_point_p1_y = points.p1.y;
         }
-	if(points.p1.y  > 362 && points.p1.y <= 768 && *diff2>10 && !servo_mode){
+	if(points.p1.y  >= 362 && points.p1.y <= 768 && *diff2>10 && !servo_mode){
 		if(*diff2>10 && *diff2<=40)
                		*pos_servo_y = *pos_servo_y - 1;
                 if(*diff2>40 &&  *diff2<=100)
@@ -413,7 +484,7 @@ int calculates_position(int *diff1,int *diff2, int *old_point_p1_x, int *old_poi
 
 
 
-void  shutdown(){
+void  shutdown(int last_pos_servo_x,int last_pos_servo_y){
 	//bcm2835_set_debug(1);
 	uint8_t status = status_button_shutdown();
 	printf("status shutdown: %d\n",status);
@@ -427,8 +498,10 @@ void  shutdown(){
 			close(i2c_fd);
 		} 
 		
-		onoff();
-		if(!in_shutdown) system("sudo init 0"); 
+		if(!in_shutdown){
+			onoff(1,last_pos_servo_x,last_pos_servo_y);
+			system("sudo init 0");
+		} 
 		in_shutdown=TRUE;
 		
 
@@ -448,7 +521,7 @@ void  mode_video(){
 			video_mode = FALSE;
 		}else{
 			led_white_on();
-			system("sudo -u pi ./streaming.sh &");
+			system("sudo -u pi /home/pi/chaser-man/streaming.sh &");
 			video_mode = TRUE;
 		}
 	}
@@ -486,6 +559,8 @@ int main(int argc, char* argv[])
     int old_pos_servo_y;
     t_points points;
 
+        if (signal(SIGINT, sig_handler) == SIG_ERR)     // Catch kill signal
+
         if(argc <= 1){
                 printf("too few args, try %s /dev/i2c-0\n",argv[0]);
                 return -1;
@@ -499,8 +574,8 @@ int main(int argc, char* argv[])
 	init();
        led_yellow_on();
         while (1)
-        {
-		shutdown();
+	{
+		shutdown(global_pos_servo_x,global_pos_servo_y);
 		mode_video();
 		mode_servo();
 		if(!in_shutdown){
@@ -514,7 +589,8 @@ int main(int argc, char* argv[])
 					&old_pos_servo_x,&old_pos_servo_y,points,&pos_servo_x,&pos_servo_y);
 
 			
-                                                
+                                global_pos_servo_x = pos_servo_x;
+				global_pos_servo_y = pos_servo_y;
 			}else{
 				printf("ir not detected!!\n");
 			}
