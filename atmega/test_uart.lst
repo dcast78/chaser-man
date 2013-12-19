@@ -1,0 +1,1114 @@
+
+test_uart.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000018  00800100  00000588  0000061c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000588  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000045  00800118  00800118  00000634  2**0
+                  ALLOC
+  3 .stab         000014f4  00000000  00000000  00000634  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      00000be7  00000000  00000000  00001b28  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .comment      00000011  00000000  00000000  0000270f  2**0
+                  CONTENTS, READONLY
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 60 00 	jmp	0xc0	; 0xc0 <__ctors_end>
+   4:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+   8:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+   c:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  10:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  14:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  18:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  1c:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  20:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  24:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  28:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  2c:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  30:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  34:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  38:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  3c:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  40:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  44:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  48:	0c 94 7f 00 	jmp	0xfe	; 0xfe <__vector_18>
+  4c:	0c 94 c9 00 	jmp	0x192	; 0x192 <__vector_19>
+  50:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  54:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  58:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  5c:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  60:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+  64:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__bad_interrupt>
+
+00000068 <__c.1743>:
+  68:	53 74 72 69 6e 67 20 73 74 6f 72 65 64 20 69 6e     String stored in
+  78:	20 46 4c 41 53 48 0a 00                              FLASH..
+
+00000080 <__c.1745>:
+  80:	55 41 52 54 20 46 72 61 6d 65 20 45 72 72 6f 72     UART Frame Error
+  90:	3a 20 00                                            : .
+
+00000093 <__c.1747>:
+  93:	55 41 52 54 20 4f 76 65 72 72 75 6e 20 45 72 72     UART Overrun Err
+  a3:	6f 72 3a 20 00                                      or: .
+
+000000a8 <__c.1749>:
+  a8:	42 75 66 66 65 72 20 6f 76 65 72 66 6c 6f 77 20     Buffer overflow 
+  b8:	65 72 72 6f 72 3a 20 00                             error: .
+
+000000c0 <__ctors_end>:
+  c0:	11 24       	eor	r1, r1
+  c2:	1f be       	out	0x3f, r1	; 63
+  c4:	cf ef       	ldi	r28, 0xFF	; 255
+  c6:	d8 e0       	ldi	r29, 0x08	; 8
+  c8:	de bf       	out	0x3e, r29	; 62
+  ca:	cd bf       	out	0x3d, r28	; 61
+
+000000cc <__do_copy_data>:
+  cc:	11 e0       	ldi	r17, 0x01	; 1
+  ce:	a0 e0       	ldi	r26, 0x00	; 0
+  d0:	b1 e0       	ldi	r27, 0x01	; 1
+  d2:	e8 e8       	ldi	r30, 0x88	; 136
+  d4:	f5 e0       	ldi	r31, 0x05	; 5
+  d6:	02 c0       	rjmp	.+4      	; 0xdc <__do_copy_data+0x10>
+  d8:	05 90       	lpm	r0, Z+
+  da:	0d 92       	st	X+, r0
+  dc:	a8 31       	cpi	r26, 0x18	; 24
+  de:	b1 07       	cpc	r27, r17
+  e0:	d9 f7       	brne	.-10     	; 0xd8 <__do_copy_data+0xc>
+
+000000e2 <__do_clear_bss>:
+  e2:	11 e0       	ldi	r17, 0x01	; 1
+  e4:	a8 e1       	ldi	r26, 0x18	; 24
+  e6:	b1 e0       	ldi	r27, 0x01	; 1
+  e8:	01 c0       	rjmp	.+2      	; 0xec <.do_clear_bss_start>
+
+000000ea <.do_clear_bss_loop>:
+  ea:	1d 92       	st	X+, r1
+
+000000ec <.do_clear_bss_start>:
+  ec:	ad 35       	cpi	r26, 0x5D	; 93
+  ee:	b1 07       	cpc	r27, r17
+  f0:	e1 f7       	brne	.-8      	; 0xea <.do_clear_bss_loop>
+  f2:	0e 94 0c 02 	call	0x418	; 0x418 <main>
+  f6:	0c 94 c2 02 	jmp	0x584	; 0x584 <_exit>
+
+000000fa <__bad_interrupt>:
+  fa:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000fe <__vector_18>:
+ISR(UART0_RECEIVE_INTERRUPT)
+/*************************************************************************
+Function: UART Receive Complete interrupt
+Purpose:  called when the UART has received a character
+**************************************************************************/
+{
+  fe:	1f 92       	push	r1
+ 100:	0f 92       	push	r0
+ 102:	00 90 5f 00 	lds	r0, 0x005F
+ 106:	0f 92       	push	r0
+ 108:	11 24       	eor	r1, r1
+ 10a:	2f 93       	push	r18
+ 10c:	8f 93       	push	r24
+ 10e:	9f 93       	push	r25
+ 110:	ef 93       	push	r30
+ 112:	ff 93       	push	r31
+ 114:	cf 93       	push	r28
+ 116:	df 93       	push	r29
+ 118:	00 d0       	rcall	.+0      	; 0x11a <__vector_18+0x1c>
+ 11a:	00 d0       	rcall	.+0      	; 0x11c <__vector_18+0x1e>
+ 11c:	cd b7       	in	r28, 0x3d	; 61
+ 11e:	de b7       	in	r29, 0x3e	; 62
+
+00000120 <.LM1>:
+    unsigned char usr;
+    unsigned char lastRxError;
+ 
+ 
+    /* read UART status register and UART data register */ 
+    usr  = UART0_STATUS;
+ 120:	80 ec       	ldi	r24, 0xC0	; 192
+ 122:	90 e0       	ldi	r25, 0x00	; 0
+ 124:	fc 01       	movw	r30, r24
+ 126:	80 81       	ld	r24, Z
+ 128:	8a 83       	std	Y+2, r24	; 0x02
+
+0000012a <.LM2>:
+    data = UART0_DATA;
+ 12a:	86 ec       	ldi	r24, 0xC6	; 198
+ 12c:	90 e0       	ldi	r25, 0x00	; 0
+ 12e:	fc 01       	movw	r30, r24
+ 130:	80 81       	ld	r24, Z
+ 132:	8b 83       	std	Y+3, r24	; 0x03
+
+00000134 <.LM3>:
+#if defined( AT90_UART )
+    lastRxError = (usr & (_BV(FE)|_BV(DOR)) );
+#elif defined( ATMEGA_USART )
+    lastRxError = (usr & (_BV(FE)|_BV(DOR)) );
+#elif defined( ATMEGA_USART0 )
+    lastRxError = (usr & (_BV(FE0)|_BV(DOR0)) );
+ 134:	8a 81       	ldd	r24, Y+2	; 0x02
+ 136:	88 71       	andi	r24, 0x18	; 24
+ 138:	89 83       	std	Y+1, r24	; 0x01
+
+0000013a <.LM4>:
+#elif defined ( ATMEGA_UART )
+    lastRxError = (usr & (_BV(FE)|_BV(DOR)) );
+#endif
+        
+    /* calculate buffer index */ 
+    tmphead = ( UART_RxHead + 1) & UART_RX_BUFFER_MASK;
+ 13a:	80 91 5a 01 	lds	r24, 0x015A
+ 13e:	8f 5f       	subi	r24, 0xFF	; 255
+ 140:	8f 71       	andi	r24, 0x1F	; 31
+ 142:	8c 83       	std	Y+4, r24	; 0x04
+
+00000144 <.LM5>:
+    
+    if ( tmphead == UART_RxTail ) {
+ 144:	80 91 5b 01 	lds	r24, 0x015B
+ 148:	9c 81       	ldd	r25, Y+4	; 0x04
+ 14a:	98 17       	cp	r25, r24
+ 14c:	19 f4       	brne	.+6      	; 0x154 <.L2>
+
+0000014e <.LM6>:
+        /* error: receive buffer overflow */
+        lastRxError = UART_BUFFER_OVERFLOW >> 8;
+ 14e:	82 e0       	ldi	r24, 0x02	; 2
+ 150:	89 83       	std	Y+1, r24	; 0x01
+ 152:	0b c0       	rjmp	.+22     	; 0x16a <.L3>
+
+00000154 <.L2>:
+    }else{
+        /* store new index */
+        UART_RxHead = tmphead;
+ 154:	8c 81       	ldd	r24, Y+4	; 0x04
+ 156:	80 93 5a 01 	sts	0x015A, r24
+
+0000015a <.LM8>:
+        /* store received data in buffer */
+        UART_RxBuf[tmphead] = data;
+ 15a:	8c 81       	ldd	r24, Y+4	; 0x04
+ 15c:	88 2f       	mov	r24, r24
+ 15e:	90 e0       	ldi	r25, 0x00	; 0
+ 160:	88 5c       	subi	r24, 0xC8	; 200
+ 162:	9e 4f       	sbci	r25, 0xFE	; 254
+ 164:	2b 81       	ldd	r18, Y+3	; 0x03
+ 166:	fc 01       	movw	r30, r24
+ 168:	20 83       	st	Z, r18
+
+0000016a <.L3>:
+    }
+    UART_LastRxError = lastRxError;   
+ 16a:	89 81       	ldd	r24, Y+1	; 0x01
+ 16c:	80 93 5c 01 	sts	0x015C, r24
+
+00000170 <.LM10>:
+}
+ 170:	0f 90       	pop	r0
+ 172:	0f 90       	pop	r0
+ 174:	0f 90       	pop	r0
+ 176:	0f 90       	pop	r0
+ 178:	df 91       	pop	r29
+ 17a:	cf 91       	pop	r28
+ 17c:	ff 91       	pop	r31
+ 17e:	ef 91       	pop	r30
+ 180:	9f 91       	pop	r25
+ 182:	8f 91       	pop	r24
+ 184:	2f 91       	pop	r18
+ 186:	0f 90       	pop	r0
+ 188:	00 92 5f 00 	sts	0x005F, r0
+ 18c:	0f 90       	pop	r0
+ 18e:	1f 90       	pop	r1
+ 190:	18 95       	reti
+
+00000192 <__vector_19>:
+ISR(UART0_TRANSMIT_INTERRUPT)
+/*************************************************************************
+Function: UART Data Register Empty interrupt
+Purpose:  called when the UART is ready to transmit the next byte
+**************************************************************************/
+{
+ 192:	1f 92       	push	r1
+ 194:	0f 92       	push	r0
+ 196:	00 90 5f 00 	lds	r0, 0x005F
+ 19a:	0f 92       	push	r0
+ 19c:	11 24       	eor	r1, r1
+ 19e:	2f 93       	push	r18
+ 1a0:	3f 93       	push	r19
+ 1a2:	8f 93       	push	r24
+ 1a4:	9f 93       	push	r25
+ 1a6:	ef 93       	push	r30
+ 1a8:	ff 93       	push	r31
+ 1aa:	cf 93       	push	r28
+ 1ac:	df 93       	push	r29
+ 1ae:	1f 92       	push	r1
+ 1b0:	cd b7       	in	r28, 0x3d	; 61
+ 1b2:	de b7       	in	r29, 0x3e	; 62
+
+000001b4 <.LM12>:
+    unsigned char tmptail;
+
+    
+    if ( UART_TxHead != UART_TxTail) {
+ 1b4:	90 91 58 01 	lds	r25, 0x0158
+ 1b8:	80 91 59 01 	lds	r24, 0x0159
+ 1bc:	98 17       	cp	r25, r24
+ 1be:	a1 f0       	breq	.+40     	; 0x1e8 <.L5>
+
+000001c0 <.LM13>:
+        /* calculate and store new buffer index */
+        tmptail = (UART_TxTail + 1) & UART_TX_BUFFER_MASK;
+ 1c0:	80 91 59 01 	lds	r24, 0x0159
+ 1c4:	8f 5f       	subi	r24, 0xFF	; 255
+ 1c6:	8f 71       	andi	r24, 0x1F	; 31
+ 1c8:	89 83       	std	Y+1, r24	; 0x01
+
+000001ca <.LM14>:
+        UART_TxTail = tmptail;
+ 1ca:	89 81       	ldd	r24, Y+1	; 0x01
+ 1cc:	80 93 59 01 	sts	0x0159, r24
+
+000001d0 <.LM15>:
+        /* get one byte from buffer and write it to UART */
+        UART0_DATA = UART_TxBuf[tmptail];  /* start transmission */
+ 1d0:	86 ec       	ldi	r24, 0xC6	; 198
+ 1d2:	90 e0       	ldi	r25, 0x00	; 0
+ 1d4:	29 81       	ldd	r18, Y+1	; 0x01
+ 1d6:	22 2f       	mov	r18, r18
+ 1d8:	30 e0       	ldi	r19, 0x00	; 0
+ 1da:	28 5e       	subi	r18, 0xE8	; 232
+ 1dc:	3e 4f       	sbci	r19, 0xFE	; 254
+ 1de:	f9 01       	movw	r30, r18
+ 1e0:	20 81       	ld	r18, Z
+ 1e2:	fc 01       	movw	r30, r24
+ 1e4:	20 83       	st	Z, r18
+ 1e6:	09 c0       	rjmp	.+18     	; 0x1fa <.L4>
+
+000001e8 <.L5>:
+    }else{
+        /* tx buffer empty, disable UDRE interrupt */
+        UART0_CONTROL &= ~_BV(UART0_UDRIE);
+ 1e8:	81 ec       	ldi	r24, 0xC1	; 193
+ 1ea:	90 e0       	ldi	r25, 0x00	; 0
+ 1ec:	21 ec       	ldi	r18, 0xC1	; 193
+ 1ee:	30 e0       	ldi	r19, 0x00	; 0
+ 1f0:	f9 01       	movw	r30, r18
+ 1f2:	20 81       	ld	r18, Z
+ 1f4:	2f 7d       	andi	r18, 0xDF	; 223
+ 1f6:	fc 01       	movw	r30, r24
+ 1f8:	20 83       	st	Z, r18
+
+000001fa <.L4>:
+    }
+}
+ 1fa:	0f 90       	pop	r0
+ 1fc:	df 91       	pop	r29
+ 1fe:	cf 91       	pop	r28
+ 200:	ff 91       	pop	r31
+ 202:	ef 91       	pop	r30
+ 204:	9f 91       	pop	r25
+ 206:	8f 91       	pop	r24
+ 208:	3f 91       	pop	r19
+ 20a:	2f 91       	pop	r18
+ 20c:	0f 90       	pop	r0
+ 20e:	00 92 5f 00 	sts	0x005F, r0
+ 212:	0f 90       	pop	r0
+ 214:	1f 90       	pop	r1
+ 216:	18 95       	reti
+
+00000218 <uart_init>:
+Purpose:  initialize UART and set baudrate
+Input:    baudrate using macro UART_BAUD_SELECT()
+Returns:  none
+**************************************************************************/
+void uart_init(unsigned int baudrate)
+{
+ 218:	cf 93       	push	r28
+ 21a:	df 93       	push	r29
+ 21c:	00 d0       	rcall	.+0      	; 0x21e <uart_init+0x6>
+ 21e:	cd b7       	in	r28, 0x3d	; 61
+ 220:	de b7       	in	r29, 0x3e	; 62
+ 222:	9a 83       	std	Y+2, r25	; 0x02
+ 224:	89 83       	std	Y+1, r24	; 0x01
+
+00000226 <.LM19>:
+    UART_TxHead = 0;
+ 226:	10 92 58 01 	sts	0x0158, r1
+
+0000022a <.LM20>:
+    UART_TxTail = 0;
+ 22a:	10 92 59 01 	sts	0x0159, r1
+
+0000022e <.LM21>:
+    UART_RxHead = 0;
+ 22e:	10 92 5a 01 	sts	0x015A, r1
+
+00000232 <.LM22>:
+    UART_RxTail = 0;
+ 232:	10 92 5b 01 	sts	0x015B, r1
+
+00000236 <.LM23>:
+    UCSRC = (3<<UCSZ0);
+    #endif 
+    
+#elif defined (ATMEGA_USART0 )
+    /* Set baud rate */
+    if ( baudrate & 0x8000 ) 
+ 236:	89 81       	ldd	r24, Y+1	; 0x01
+ 238:	9a 81       	ldd	r25, Y+2	; 0x02
+ 23a:	99 23       	and	r25, r25
+ 23c:	54 f4       	brge	.+20     	; 0x252 <.L8>
+
+0000023e <.LM24>:
+    {
+   		UART0_STATUS = (1<<U2X0);  //Enable 2x speed 
+ 23e:	80 ec       	ldi	r24, 0xC0	; 192
+ 240:	90 e0       	ldi	r25, 0x00	; 0
+ 242:	22 e0       	ldi	r18, 0x02	; 2
+ 244:	fc 01       	movw	r30, r24
+ 246:	20 83       	st	Z, r18
+
+00000248 <.LM25>:
+   		baudrate &= ~0x8000;
+ 248:	89 81       	ldd	r24, Y+1	; 0x01
+ 24a:	9a 81       	ldd	r25, Y+2	; 0x02
+ 24c:	9f 77       	andi	r25, 0x7F	; 127
+ 24e:	9a 83       	std	Y+2, r25	; 0x02
+ 250:	89 83       	std	Y+1, r24	; 0x01
+
+00000252 <.L8>:
+   	}
+    UBRR0H = (unsigned char)(baudrate>>8);
+ 252:	85 ec       	ldi	r24, 0xC5	; 197
+ 254:	90 e0       	ldi	r25, 0x00	; 0
+ 256:	29 81       	ldd	r18, Y+1	; 0x01
+ 258:	3a 81       	ldd	r19, Y+2	; 0x02
+ 25a:	23 2f       	mov	r18, r19
+ 25c:	33 27       	eor	r19, r19
+ 25e:	fc 01       	movw	r30, r24
+ 260:	20 83       	st	Z, r18
+
+00000262 <.LM27>:
+    UBRR0L = (unsigned char) baudrate;
+ 262:	84 ec       	ldi	r24, 0xC4	; 196
+ 264:	90 e0       	ldi	r25, 0x00	; 0
+ 266:	29 81       	ldd	r18, Y+1	; 0x01
+ 268:	fc 01       	movw	r30, r24
+ 26a:	20 83       	st	Z, r18
+
+0000026c <.LM28>:
+
+    /* Enable USART receiver and transmitter and receive complete interrupt */
+    UART0_CONTROL = _BV(RXCIE0)|(1<<RXEN0)|(1<<TXEN0);
+ 26c:	81 ec       	ldi	r24, 0xC1	; 193
+ 26e:	90 e0       	ldi	r25, 0x00	; 0
+ 270:	28 e9       	ldi	r18, 0x98	; 152
+ 272:	fc 01       	movw	r30, r24
+ 274:	20 83       	st	Z, r18
+
+00000276 <.LM29>:
+    
+    /* Set frame format: asynchronous, 8data, no parity, 1stop bit */
+    #ifdef URSEL0
+    UCSR0C = (1<<URSEL0)|(3<<UCSZ00);
+    #else
+    UCSR0C = (3<<UCSZ00);
+ 276:	82 ec       	ldi	r24, 0xC2	; 194
+ 278:	90 e0       	ldi	r25, 0x00	; 0
+ 27a:	26 e0       	ldi	r18, 0x06	; 6
+ 27c:	fc 01       	movw	r30, r24
+ 27e:	20 83       	st	Z, r18
+
+00000280 <.LM30>:
+    /* Enable UART receiver and transmitter and receive complete interrupt */
+    UART0_CONTROL = _BV(RXCIE)|(1<<RXEN)|(1<<TXEN);
+
+#endif
+
+}/* uart_init */
+ 280:	0f 90       	pop	r0
+ 282:	0f 90       	pop	r0
+ 284:	df 91       	pop	r29
+ 286:	cf 91       	pop	r28
+ 288:	08 95       	ret
+
+0000028a <uart_getc>:
+Purpose:  return byte from ringbuffer  
+Returns:  lower byte:  received byte from ringbuffer
+          higher byte: last receive error
+**************************************************************************/
+unsigned int uart_getc(void)
+{    
+ 28a:	cf 93       	push	r28
+ 28c:	df 93       	push	r29
+ 28e:	00 d0       	rcall	.+0      	; 0x290 <uart_getc+0x6>
+ 290:	cd b7       	in	r28, 0x3d	; 61
+ 292:	de b7       	in	r29, 0x3e	; 62
+
+00000294 <.LM32>:
+    unsigned char tmptail;
+    unsigned char data;
+
+
+    if ( UART_RxHead == UART_RxTail ) {
+ 294:	90 91 5a 01 	lds	r25, 0x015A
+ 298:	80 91 5b 01 	lds	r24, 0x015B
+ 29c:	98 17       	cp	r25, r24
+ 29e:	19 f4       	brne	.+6      	; 0x2a6 <.L10>
+
+000002a0 <.LM33>:
+        return UART_NO_DATA;   /* no data available */
+ 2a0:	80 e0       	ldi	r24, 0x00	; 0
+ 2a2:	91 e0       	ldi	r25, 0x01	; 1
+ 2a4:	1b c0       	rjmp	.+54     	; 0x2dc <.L11>
+
+000002a6 <.L10>:
+    }
+    
+    /* calculate /store buffer index */
+    tmptail = (UART_RxTail + 1) & UART_RX_BUFFER_MASK;
+ 2a6:	80 91 5b 01 	lds	r24, 0x015B
+ 2aa:	8f 5f       	subi	r24, 0xFF	; 255
+ 2ac:	8f 71       	andi	r24, 0x1F	; 31
+ 2ae:	89 83       	std	Y+1, r24	; 0x01
+
+000002b0 <.LM35>:
+    UART_RxTail = tmptail; 
+ 2b0:	89 81       	ldd	r24, Y+1	; 0x01
+ 2b2:	80 93 5b 01 	sts	0x015B, r24
+
+000002b6 <.LM36>:
+    
+    /* get data from receive buffer */
+    data = UART_RxBuf[tmptail];
+ 2b6:	89 81       	ldd	r24, Y+1	; 0x01
+ 2b8:	88 2f       	mov	r24, r24
+ 2ba:	90 e0       	ldi	r25, 0x00	; 0
+ 2bc:	88 5c       	subi	r24, 0xC8	; 200
+ 2be:	9e 4f       	sbci	r25, 0xFE	; 254
+ 2c0:	fc 01       	movw	r30, r24
+ 2c2:	80 81       	ld	r24, Z
+ 2c4:	8a 83       	std	Y+2, r24	; 0x02
+
+000002c6 <.LM37>:
+    
+    return (UART_LastRxError << 8) + data;
+ 2c6:	80 91 5c 01 	lds	r24, 0x015C
+ 2ca:	88 2f       	mov	r24, r24
+ 2cc:	90 e0       	ldi	r25, 0x00	; 0
+ 2ce:	38 2f       	mov	r19, r24
+ 2d0:	22 27       	eor	r18, r18
+ 2d2:	8a 81       	ldd	r24, Y+2	; 0x02
+ 2d4:	88 2f       	mov	r24, r24
+ 2d6:	90 e0       	ldi	r25, 0x00	; 0
+ 2d8:	82 0f       	add	r24, r18
+ 2da:	93 1f       	adc	r25, r19
+
+000002dc <.L11>:
+
+}/* uart_getc */
+ 2dc:	0f 90       	pop	r0
+ 2de:	0f 90       	pop	r0
+ 2e0:	df 91       	pop	r29
+ 2e2:	cf 91       	pop	r28
+ 2e4:	08 95       	ret
+
+000002e6 <uart_putc>:
+Purpose:  write byte to ringbuffer for transmitting via UART
+Input:    byte to be transmitted
+Returns:  none          
+**************************************************************************/
+void uart_putc(unsigned char data)
+{
+ 2e6:	cf 93       	push	r28
+ 2e8:	df 93       	push	r29
+ 2ea:	00 d0       	rcall	.+0      	; 0x2ec <uart_putc+0x6>
+ 2ec:	cd b7       	in	r28, 0x3d	; 61
+ 2ee:	de b7       	in	r29, 0x3e	; 62
+ 2f0:	8a 83       	std	Y+2, r24	; 0x02
+
+000002f2 <.LM40>:
+    unsigned char tmphead;
+
+    
+    tmphead  = (UART_TxHead + 1) & UART_TX_BUFFER_MASK;
+ 2f2:	80 91 58 01 	lds	r24, 0x0158
+ 2f6:	8f 5f       	subi	r24, 0xFF	; 255
+ 2f8:	8f 71       	andi	r24, 0x1F	; 31
+ 2fa:	89 83       	std	Y+1, r24	; 0x01
+
+000002fc <.LM41>:
+	...
+
+000002fe <.L13>:
+    
+    while ( tmphead == UART_TxTail ){
+ 2fe:	80 91 59 01 	lds	r24, 0x0159
+ 302:	99 81       	ldd	r25, Y+1	; 0x01
+ 304:	98 17       	cp	r25, r24
+ 306:	d9 f3       	breq	.-10     	; 0x2fe <.L13>
+
+00000308 <.LM43>:
+        ;/* wait for free space in buffer */
+    }
+    
+    UART_TxBuf[tmphead] = data;
+ 308:	89 81       	ldd	r24, Y+1	; 0x01
+ 30a:	88 2f       	mov	r24, r24
+ 30c:	90 e0       	ldi	r25, 0x00	; 0
+ 30e:	88 5e       	subi	r24, 0xE8	; 232
+ 310:	9e 4f       	sbci	r25, 0xFE	; 254
+ 312:	2a 81       	ldd	r18, Y+2	; 0x02
+ 314:	fc 01       	movw	r30, r24
+ 316:	20 83       	st	Z, r18
+
+00000318 <.LM44>:
+    UART_TxHead = tmphead;
+ 318:	89 81       	ldd	r24, Y+1	; 0x01
+ 31a:	80 93 58 01 	sts	0x0158, r24
+
+0000031e <.LM45>:
+
+    /* enable UDRE interrupt */
+    UART0_CONTROL    |= _BV(UART0_UDRIE);
+ 31e:	81 ec       	ldi	r24, 0xC1	; 193
+ 320:	90 e0       	ldi	r25, 0x00	; 0
+ 322:	21 ec       	ldi	r18, 0xC1	; 193
+ 324:	30 e0       	ldi	r19, 0x00	; 0
+ 326:	f9 01       	movw	r30, r18
+ 328:	20 81       	ld	r18, Z
+ 32a:	20 62       	ori	r18, 0x20	; 32
+ 32c:	fc 01       	movw	r30, r24
+ 32e:	20 83       	st	Z, r18
+
+00000330 <.LM46>:
+
+}/* uart_putc */
+ 330:	0f 90       	pop	r0
+ 332:	0f 90       	pop	r0
+ 334:	df 91       	pop	r29
+ 336:	cf 91       	pop	r28
+ 338:	08 95       	ret
+
+0000033a <uart_puts>:
+Purpose:  transmit string to UART
+Input:    string to be transmitted
+Returns:  none          
+**************************************************************************/
+void uart_puts(const char *s )
+{
+ 33a:	cf 93       	push	r28
+ 33c:	df 93       	push	r29
+ 33e:	00 d0       	rcall	.+0      	; 0x340 <uart_puts+0x6>
+ 340:	cd b7       	in	r28, 0x3d	; 61
+ 342:	de b7       	in	r29, 0x3e	; 62
+ 344:	9a 83       	std	Y+2, r25	; 0x02
+ 346:	89 83       	std	Y+1, r24	; 0x01
+
+00000348 <.LM48>:
+    while (*s) 
+ 348:	0d c0       	rjmp	.+26     	; 0x364 <.L15>
+
+0000034a <.L16>:
+      uart_putc(*s++);
+ 34a:	89 81       	ldd	r24, Y+1	; 0x01
+ 34c:	9a 81       	ldd	r25, Y+2	; 0x02
+ 34e:	fc 01       	movw	r30, r24
+ 350:	80 81       	ld	r24, Z
+ 352:	28 2f       	mov	r18, r24
+ 354:	89 81       	ldd	r24, Y+1	; 0x01
+ 356:	9a 81       	ldd	r25, Y+2	; 0x02
+ 358:	01 96       	adiw	r24, 0x01	; 1
+ 35a:	9a 83       	std	Y+2, r25	; 0x02
+ 35c:	89 83       	std	Y+1, r24	; 0x01
+ 35e:	82 2f       	mov	r24, r18
+ 360:	0e 94 73 01 	call	0x2e6	; 0x2e6 <uart_putc>
+
+00000364 <.L15>:
+Input:    string to be transmitted
+Returns:  none          
+**************************************************************************/
+void uart_puts(const char *s )
+{
+    while (*s) 
+ 364:	89 81       	ldd	r24, Y+1	; 0x01
+ 366:	9a 81       	ldd	r25, Y+2	; 0x02
+ 368:	fc 01       	movw	r30, r24
+ 36a:	80 81       	ld	r24, Z
+ 36c:	88 23       	and	r24, r24
+ 36e:	69 f7       	brne	.-38     	; 0x34a <.L16>
+
+00000370 <.LM51>:
+      uart_putc(*s++);
+
+}/* uart_puts */
+ 370:	0f 90       	pop	r0
+ 372:	0f 90       	pop	r0
+ 374:	df 91       	pop	r29
+ 376:	cf 91       	pop	r28
+ 378:	08 95       	ret
+
+0000037a <uart_puts_p>:
+Purpose:  transmit string from program memory to UART
+Input:    program memory string to be transmitted
+Returns:  none
+**************************************************************************/
+void uart_puts_p(const char *progmem_s )
+{
+ 37a:	1f 93       	push	r17
+ 37c:	cf 93       	push	r28
+ 37e:	df 93       	push	r29
+ 380:	00 d0       	rcall	.+0      	; 0x382 <uart_puts_p+0x8>
+ 382:	00 d0       	rcall	.+0      	; 0x384 <uart_puts_p+0xa>
+ 384:	1f 92       	push	r1
+ 386:	cd b7       	in	r28, 0x3d	; 61
+ 388:	de b7       	in	r29, 0x3e	; 62
+ 38a:	9d 83       	std	Y+5, r25	; 0x05
+ 38c:	8c 83       	std	Y+4, r24	; 0x04
+
+0000038e <.LM53>:
+    register char c;
+    
+    while ( (c = pgm_read_byte(progmem_s++)) ) 
+ 38e:	03 c0       	rjmp	.+6      	; 0x396 <.L18>
+
+00000390 <.L19>:
+      uart_putc(c);
+ 390:	81 2f       	mov	r24, r17
+ 392:	0e 94 73 01 	call	0x2e6	; 0x2e6 <uart_putc>
+
+00000396 <.L18>:
+**************************************************************************/
+void uart_puts_p(const char *progmem_s )
+{
+    register char c;
+    
+    while ( (c = pgm_read_byte(progmem_s++)) ) 
+ 396:	8c 81       	ldd	r24, Y+4	; 0x04
+ 398:	9d 81       	ldd	r25, Y+5	; 0x05
+ 39a:	9a 83       	std	Y+2, r25	; 0x02
+ 39c:	89 83       	std	Y+1, r24	; 0x01
+ 39e:	8c 81       	ldd	r24, Y+4	; 0x04
+ 3a0:	9d 81       	ldd	r25, Y+5	; 0x05
+ 3a2:	01 96       	adiw	r24, 0x01	; 1
+ 3a4:	9d 83       	std	Y+5, r25	; 0x05
+ 3a6:	8c 83       	std	Y+4, r24	; 0x04
+ 3a8:	89 81       	ldd	r24, Y+1	; 0x01
+ 3aa:	9a 81       	ldd	r25, Y+2	; 0x02
+ 3ac:	fc 01       	movw	r30, r24
+ 3ae:	14 91       	lpm	r17, Z+
+ 3b0:	1b 83       	std	Y+3, r17	; 0x03
+ 3b2:	8b 81       	ldd	r24, Y+3	; 0x03
+
+000003b4 <.LBE2>:
+ 3b4:	18 2f       	mov	r17, r24
+ 3b6:	11 23       	and	r17, r17
+ 3b8:	59 f7       	brne	.-42     	; 0x390 <.L19>
+
+000003ba <.LM56>:
+      uart_putc(c);
+
+}/* uart_puts_p */
+ 3ba:	0f 90       	pop	r0
+ 3bc:	0f 90       	pop	r0
+ 3be:	0f 90       	pop	r0
+ 3c0:	0f 90       	pop	r0
+ 3c2:	0f 90       	pop	r0
+ 3c4:	df 91       	pop	r29
+ 3c6:	cf 91       	pop	r28
+ 3c8:	1f 91       	pop	r17
+ 3ca:	08 95       	ret
+
+000003cc <uart_available>:
+Purpose:  Determine the number of bytes waiting in the receive buffer
+Input:    None
+Returns:  Integer number of bytes in the receive buffer
+**************************************************************************/
+int uart_available(void)
+{
+ 3cc:	cf 93       	push	r28
+ 3ce:	df 93       	push	r29
+ 3d0:	cd b7       	in	r28, 0x3d	; 61
+ 3d2:	de b7       	in	r29, 0x3e	; 62
+
+000003d4 <.LM58>:
+        return (UART_RX_BUFFER_MASK + UART_RxHead - UART_RxTail) % UART_RX_BUFFER_MASK;
+ 3d4:	80 91 5a 01 	lds	r24, 0x015A
+ 3d8:	88 2f       	mov	r24, r24
+ 3da:	90 e0       	ldi	r25, 0x00	; 0
+ 3dc:	9c 01       	movw	r18, r24
+ 3de:	21 5e       	subi	r18, 0xE1	; 225
+ 3e0:	3f 4f       	sbci	r19, 0xFF	; 255
+ 3e2:	80 91 5b 01 	lds	r24, 0x015B
+ 3e6:	88 2f       	mov	r24, r24
+ 3e8:	90 e0       	ldi	r25, 0x00	; 0
+ 3ea:	a9 01       	movw	r20, r18
+ 3ec:	48 1b       	sub	r20, r24
+ 3ee:	59 0b       	sbc	r21, r25
+ 3f0:	ca 01       	movw	r24, r20
+ 3f2:	2f e1       	ldi	r18, 0x1F	; 31
+ 3f4:	30 e0       	ldi	r19, 0x00	; 0
+ 3f6:	b9 01       	movw	r22, r18
+ 3f8:	0e 94 69 02 	call	0x4d2	; 0x4d2 <__divmodhi4>
+
+000003fc <.LM59>:
+}/* uart_available */
+ 3fc:	df 91       	pop	r29
+ 3fe:	cf 91       	pop	r28
+ 400:	08 95       	ret
+
+00000402 <uart_flush>:
+Purpose:  Flush bytes waiting the receive buffer.  Acutally ignores them.
+Input:    None
+Returns:  None
+**************************************************************************/
+void uart_flush(void)
+{
+ 402:	cf 93       	push	r28
+ 404:	df 93       	push	r29
+ 406:	cd b7       	in	r28, 0x3d	; 61
+ 408:	de b7       	in	r29, 0x3e	; 62
+
+0000040a <.LM61>:
+        UART_RxHead = UART_RxTail;
+ 40a:	80 91 5b 01 	lds	r24, 0x015B
+ 40e:	80 93 5a 01 	sts	0x015A, r24
+
+00000412 <.LM62>:
+}/* uart_flush */
+ 412:	df 91       	pop	r29
+ 414:	cf 91       	pop	r28
+ 416:	08 95       	ret
+
+00000418 <main>:
+/* 9600 baud */
+#define UART_BAUD_RATE      57600      
+
+
+int main(void)
+{
+ 418:	cf 93       	push	r28
+ 41a:	df 93       	push	r29
+ 41c:	cd b7       	in	r28, 0x3d	; 61
+ 41e:	de b7       	in	r29, 0x3e	; 62
+ 420:	2b 97       	sbiw	r28, 0x0b	; 11
+ 422:	0f b6       	in	r0, 0x3f	; 63
+ 424:	f8 94       	cli
+ 426:	de bf       	out	0x3e, r29	; 62
+ 428:	0f be       	out	0x3f, r0	; 63
+ 42a:	cd bf       	out	0x3d, r28	; 61
+
+0000042c <.LM64>:
+    unsigned int c;
+    char buffer[7];
+    int  num=1;
+ 42c:	81 e0       	ldi	r24, 0x01	; 1
+ 42e:	90 e0       	ldi	r25, 0x00	; 0
+ 430:	9a 83       	std	Y+2, r25	; 0x02
+ 432:	89 83       	std	Y+1, r24	; 0x01
+
+00000434 <.LM65>:
+     *  with the macro 
+     *  UART_BAUD_SELECT() (normal speed mode )
+     *  or 
+     *  UART_BAUD_SELECT_DOUBLE_SPEED() ( double speed mode)
+     */
+    uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) ); 
+ 434:	80 e1       	ldi	r24, 0x10	; 16
+ 436:	90 e0       	ldi	r25, 0x00	; 0
+ 438:	0e 94 0c 01 	call	0x218	; 0x218 <uart_init>
+
+0000043c <.LM66>:
+    
+    /*
+     * now enable interrupt, since UART library is interrupt controlled
+     */
+    sei();
+ 43c:	78 94       	sei
+
+0000043e <.LM67>:
+     *  The string is buffered by the uart library in a circular buffer
+     *  and one character at a time is transmitted to the UART using interrupts.
+     *  uart_puts() blocks if it can not write the whole string to the circular 
+     *  buffer
+     */
+    uart_puts("String stored in SRAM\n");
+ 43e:	80 e0       	ldi	r24, 0x00	; 0
+ 440:	91 e0       	ldi	r25, 0x01	; 1
+ 442:	0e 94 9d 01 	call	0x33a	; 0x33a <uart_puts>
+
+00000446 <.LBB3>:
+    
+    /*
+     * Transmit string from program memory to UART
+     */
+    uart_puts_P("String stored in FLASH\n");
+ 446:	88 e6       	ldi	r24, 0x68	; 104
+ 448:	90 e0       	ldi	r25, 0x00	; 0
+
+0000044a <.LBE3>:
+ 44a:	0e 94 bd 01 	call	0x37a	; 0x37a <uart_puts_p>
+
+0000044e <.LM69>:
+        
+    /* 
+     * Use standard avr-libc functions to convert numbers into string
+     * before transmitting via UART
+     */     
+    itoa( num, buffer, 10);   // convert interger into string (decimal format)         
+ 44e:	9e 01       	movw	r18, r28
+ 450:	2b 5f       	subi	r18, 0xFB	; 251
+ 452:	3f 4f       	sbci	r19, 0xFF	; 255
+ 454:	89 81       	ldd	r24, Y+1	; 0x01
+ 456:	9a 81       	ldd	r25, Y+2	; 0x02
+ 458:	4a e0       	ldi	r20, 0x0A	; 10
+ 45a:	50 e0       	ldi	r21, 0x00	; 0
+ 45c:	b9 01       	movw	r22, r18
+ 45e:	0e 94 91 02 	call	0x522	; 0x522 <itoa>
+
+00000462 <.LM70>:
+    uart_puts(buffer);        // and transmit string to UART
+ 462:	ce 01       	movw	r24, r28
+ 464:	05 96       	adiw	r24, 0x05	; 5
+ 466:	0e 94 9d 01 	call	0x33a	; 0x33a <uart_puts>
+
+0000046a <.LM71>:
+
+    
+    /*
+     * Transmit single character to UART
+     */
+    uart_putc('\r');
+ 46a:	8d e0       	ldi	r24, 0x0D	; 13
+ 46c:	0e 94 73 01 	call	0x2e6	; 0x2e6 <uart_putc>
+ 470:	01 c0       	rjmp	.+2      	; 0x474 <.L28>
+
+00000472 <.L29>:
+	...
+
+00000474 <.L28>:
+         * uart_getc() returns in the lower byte the received character and 
+         * in the higher byte (bitmask) the last receive error
+         * UART_NO_DATA is returned when no data is available.
+         *
+         */
+        c = uart_getc();
+ 474:	0e 94 45 01 	call	0x28a	; 0x28a <uart_getc>
+ 478:	9c 83       	std	Y+4, r25	; 0x04
+ 47a:	8b 83       	std	Y+3, r24	; 0x03
+
+0000047c <.LM74>:
+        if ( c & UART_NO_DATA )
+ 47c:	8b 81       	ldd	r24, Y+3	; 0x03
+ 47e:	9c 81       	ldd	r25, Y+4	; 0x04
+ 480:	88 27       	eor	r24, r24
+ 482:	91 70       	andi	r25, 0x01	; 1
+ 484:	00 97       	sbiw	r24, 0x00	; 0
+ 486:	a9 f7       	brne	.-22     	; 0x472 <.L29>
+
+00000488 <.LM75>:
+        {
+            /*
+             * new data available from UART
+             * check for Frame or Overrun error
+             */
+            if ( c & UART_FRAME_ERROR )
+ 488:	8b 81       	ldd	r24, Y+3	; 0x03
+ 48a:	9c 81       	ldd	r25, Y+4	; 0x04
+ 48c:	88 27       	eor	r24, r24
+ 48e:	98 70       	andi	r25, 0x08	; 8
+ 490:	00 97       	sbiw	r24, 0x00	; 0
+ 492:	21 f0       	breq	.+8      	; 0x49c <.L25>
+
+00000494 <.LBB4>:
+            {
+                /* Framing Error detected, i.e no stop bit detected */
+                uart_puts_P("UART Frame Error: ");
+ 494:	80 e8       	ldi	r24, 0x80	; 128
+ 496:	90 e0       	ldi	r25, 0x00	; 0
+
+00000498 <.LBE4>:
+ 498:	0e 94 bd 01 	call	0x37a	; 0x37a <uart_puts_p>
+
+0000049c <.L25>:
+            }
+            if ( c & UART_OVERRUN_ERROR )
+ 49c:	8b 81       	ldd	r24, Y+3	; 0x03
+ 49e:	9c 81       	ldd	r25, Y+4	; 0x04
+ 4a0:	88 27       	eor	r24, r24
+ 4a2:	94 70       	andi	r25, 0x04	; 4
+ 4a4:	00 97       	sbiw	r24, 0x00	; 0
+ 4a6:	21 f0       	breq	.+8      	; 0x4b0 <.L26>
+
+000004a8 <.LBB5>:
+                /* 
+                 * Overrun, a character already present in the UART UDR register was 
+                 * not read by the interrupt handler before the next character arrived,
+                 * one or more received characters have been dropped
+                 */
+                uart_puts_P("UART Overrun Error: ");
+ 4a8:	83 e9       	ldi	r24, 0x93	; 147
+ 4aa:	90 e0       	ldi	r25, 0x00	; 0
+
+000004ac <.LBE5>:
+ 4ac:	0e 94 bd 01 	call	0x37a	; 0x37a <uart_puts_p>
+
+000004b0 <.L26>:
+            }
+            if ( c & UART_BUFFER_OVERFLOW )
+ 4b0:	8b 81       	ldd	r24, Y+3	; 0x03
+ 4b2:	9c 81       	ldd	r25, Y+4	; 0x04
+ 4b4:	88 27       	eor	r24, r24
+ 4b6:	92 70       	andi	r25, 0x02	; 2
+ 4b8:	00 97       	sbiw	r24, 0x00	; 0
+ 4ba:	21 f0       	breq	.+8      	; 0x4c4 <.L27>
+
+000004bc <.LBB6>:
+            {
+                /* 
+                 * We are not reading the receive buffer fast enough,
+                 * one or more received character have been dropped 
+                 */
+                uart_puts_P("Buffer overflow error: ");
+ 4bc:	88 ea       	ldi	r24, 0xA8	; 168
+ 4be:	90 e0       	ldi	r25, 0x00	; 0
+
+000004c0 <.LBE6>:
+ 4c0:	0e 94 bd 01 	call	0x37a	; 0x37a <uart_puts_p>
+
+000004c4 <.L27>:
+            }
+            /* 
+             * send received character back
+             */
+            uart_putc('*' );
+ 4c4:	8a e2       	ldi	r24, 0x2A	; 42
+ 4c6:	0e 94 73 01 	call	0x2e6	; 0x2e6 <uart_putc>
+
+000004ca <.LM82>:
+            uart_putc( (unsigned char)c );
+ 4ca:	8b 81       	ldd	r24, Y+3	; 0x03
+ 4cc:	0e 94 73 01 	call	0x2e6	; 0x2e6 <uart_putc>
+
+000004d0 <.LM83>:
+        }
+    }
+ 4d0:	d0 cf       	rjmp	.-96     	; 0x472 <.L29>
+
+000004d2 <__divmodhi4>:
+ 4d2:	97 fb       	bst	r25, 7
+ 4d4:	07 2e       	mov	r0, r23
+ 4d6:	16 f4       	brtc	.+4      	; 0x4dc <__divmodhi4+0xa>
+ 4d8:	00 94       	com	r0
+ 4da:	07 d0       	rcall	.+14     	; 0x4ea <__divmodhi4_neg1>
+ 4dc:	77 fd       	sbrc	r23, 7
+ 4de:	09 d0       	rcall	.+18     	; 0x4f2 <__divmodhi4_neg2>
+ 4e0:	0e 94 7d 02 	call	0x4fa	; 0x4fa <__udivmodhi4>
+ 4e4:	07 fc       	sbrc	r0, 7
+ 4e6:	05 d0       	rcall	.+10     	; 0x4f2 <__divmodhi4_neg2>
+ 4e8:	3e f4       	brtc	.+14     	; 0x4f8 <__divmodhi4_exit>
+
+000004ea <__divmodhi4_neg1>:
+ 4ea:	90 95       	com	r25
+ 4ec:	81 95       	neg	r24
+ 4ee:	9f 4f       	sbci	r25, 0xFF	; 255
+ 4f0:	08 95       	ret
+
+000004f2 <__divmodhi4_neg2>:
+ 4f2:	70 95       	com	r23
+ 4f4:	61 95       	neg	r22
+ 4f6:	7f 4f       	sbci	r23, 0xFF	; 255
+
+000004f8 <__divmodhi4_exit>:
+ 4f8:	08 95       	ret
+
+000004fa <__udivmodhi4>:
+ 4fa:	aa 1b       	sub	r26, r26
+ 4fc:	bb 1b       	sub	r27, r27
+ 4fe:	51 e1       	ldi	r21, 0x11	; 17
+ 500:	07 c0       	rjmp	.+14     	; 0x510 <__udivmodhi4_ep>
+
+00000502 <__udivmodhi4_loop>:
+ 502:	aa 1f       	adc	r26, r26
+ 504:	bb 1f       	adc	r27, r27
+ 506:	a6 17       	cp	r26, r22
+ 508:	b7 07       	cpc	r27, r23
+ 50a:	10 f0       	brcs	.+4      	; 0x510 <__udivmodhi4_ep>
+ 50c:	a6 1b       	sub	r26, r22
+ 50e:	b7 0b       	sbc	r27, r23
+
+00000510 <__udivmodhi4_ep>:
+ 510:	88 1f       	adc	r24, r24
+ 512:	99 1f       	adc	r25, r25
+ 514:	5a 95       	dec	r21
+ 516:	a9 f7       	brne	.-22     	; 0x502 <__udivmodhi4_loop>
+ 518:	80 95       	com	r24
+ 51a:	90 95       	com	r25
+ 51c:	bc 01       	movw	r22, r24
+ 51e:	cd 01       	movw	r24, r26
+ 520:	08 95       	ret
+
+00000522 <itoa>:
+ 522:	fb 01       	movw	r30, r22
+ 524:	9f 01       	movw	r18, r30
+ 526:	e8 94       	clt
+ 528:	42 30       	cpi	r20, 0x02	; 2
+ 52a:	c4 f0       	brlt	.+48     	; 0x55c <itoa+0x3a>
+ 52c:	45 32       	cpi	r20, 0x25	; 37
+ 52e:	b4 f4       	brge	.+44     	; 0x55c <itoa+0x3a>
+ 530:	4a 30       	cpi	r20, 0x0A	; 10
+ 532:	29 f4       	brne	.+10     	; 0x53e <itoa+0x1c>
+ 534:	97 fb       	bst	r25, 7
+ 536:	1e f4       	brtc	.+6      	; 0x53e <itoa+0x1c>
+ 538:	90 95       	com	r25
+ 53a:	81 95       	neg	r24
+ 53c:	9f 4f       	sbci	r25, 0xFF	; 255
+ 53e:	64 2f       	mov	r22, r20
+ 540:	77 27       	eor	r23, r23
+ 542:	0e 94 7d 02 	call	0x4fa	; 0x4fa <__udivmodhi4>
+ 546:	80 5d       	subi	r24, 0xD0	; 208
+ 548:	8a 33       	cpi	r24, 0x3A	; 58
+ 54a:	0c f0       	brlt	.+2      	; 0x54e <itoa+0x2c>
+ 54c:	89 5d       	subi	r24, 0xD9	; 217
+ 54e:	81 93       	st	Z+, r24
+ 550:	cb 01       	movw	r24, r22
+ 552:	00 97       	sbiw	r24, 0x00	; 0
+ 554:	a1 f7       	brne	.-24     	; 0x53e <itoa+0x1c>
+ 556:	16 f4       	brtc	.+4      	; 0x55c <itoa+0x3a>
+ 558:	5d e2       	ldi	r21, 0x2D	; 45
+ 55a:	51 93       	st	Z+, r21
+ 55c:	10 82       	st	Z, r1
+ 55e:	c9 01       	movw	r24, r18
+ 560:	0c 94 b2 02 	jmp	0x564	; 0x564 <strrev>
+
+00000564 <strrev>:
+ 564:	dc 01       	movw	r26, r24
+ 566:	fc 01       	movw	r30, r24
+ 568:	67 2f       	mov	r22, r23
+ 56a:	71 91       	ld	r23, Z+
+ 56c:	77 23       	and	r23, r23
+ 56e:	e1 f7       	brne	.-8      	; 0x568 <strrev+0x4>
+ 570:	32 97       	sbiw	r30, 0x02	; 2
+ 572:	04 c0       	rjmp	.+8      	; 0x57c <strrev+0x18>
+ 574:	7c 91       	ld	r23, X
+ 576:	6d 93       	st	X+, r22
+ 578:	70 83       	st	Z, r23
+ 57a:	62 91       	ld	r22, -Z
+ 57c:	ae 17       	cp	r26, r30
+ 57e:	bf 07       	cpc	r27, r31
+ 580:	c8 f3       	brcs	.-14     	; 0x574 <strrev+0x10>
+ 582:	08 95       	ret
+
+00000584 <_exit>:
+ 584:	f8 94       	cli
+
+00000586 <__stop_program>:
+ 586:	ff cf       	rjmp	.-2      	; 0x586 <__stop_program>

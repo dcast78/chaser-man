@@ -1,0 +1,233 @@
+
+servo_2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000017a  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         00000a68  00000000  00000000  000001d0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      0000079c  00000000  00000000  00000c38  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .comment      00000011  00000000  00000000  000013d4  2**0
+                  CONTENTS, READONLY
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 40 00 	call	0x80	; 0x80 <main>
+  78:	0c 94 bb 00 	jmp	0x176	; 0x176 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <main>:
+#include <avr/io.h>
+
+int main(){
+  80:	cf 93       	push	r28
+  82:	df 93       	push	r29
+  84:	cd b7       	in	r28, 0x3d	; 61
+  86:	de b7       	in	r29, 0x3e	; 62
+
+00000088 <.LM1>:
+// set up 2 PWM channels on PB1 and PB2 using Timer1
+
+TCCR1A = 0; // disable all PWM on Timer1 whilst we set it up
+  88:	80 e8       	ldi	r24, 0x80	; 128
+  8a:	90 e0       	ldi	r25, 0x00	; 0
+  8c:	fc 01       	movw	r30, r24
+  8e:	10 82       	st	Z, r1
+
+00000090 <.LM2>:
+ICR1 = 19999; // frequency is every 20ms
+  90:	86 e8       	ldi	r24, 0x86	; 134
+  92:	90 e0       	ldi	r25, 0x00	; 0
+  94:	2f e1       	ldi	r18, 0x1F	; 31
+  96:	3e e4       	ldi	r19, 0x4E	; 78
+  98:	fc 01       	movw	r30, r24
+  9a:	31 83       	std	Z+1, r19	; 0x01
+  9c:	20 83       	st	Z, r18
+
+0000009e <.LM3>:
+
+
+// Configure timer 1 for Fast PWM mode via ICR1, with no prescaling
+TCCR1A = (1 << WGM11);
+  9e:	80 e8       	ldi	r24, 0x80	; 128
+  a0:	90 e0       	ldi	r25, 0x00	; 0
+  a2:	22 e0       	ldi	r18, 0x02	; 2
+  a4:	fc 01       	movw	r30, r24
+  a6:	20 83       	st	Z, r18
+
+000000a8 <.LM4>:
+TCCR1B = (1 << WGM13) | (1<<WGM12) | (1 << CS10);
+  a8:	81 e8       	ldi	r24, 0x81	; 129
+  aa:	90 e0       	ldi	r25, 0x00	; 0
+  ac:	29 e1       	ldi	r18, 0x19	; 25
+  ae:	fc 01       	movw	r30, r24
+  b0:	20 83       	st	Z, r18
+
+000000b2 <.LM5>:
+
+// Set PB1 and PB2 as outputs
+DDRB |= _BV(1) | _BV(2);
+  b2:	84 e2       	ldi	r24, 0x24	; 36
+  b4:	90 e0       	ldi	r25, 0x00	; 0
+  b6:	24 e2       	ldi	r18, 0x24	; 36
+  b8:	30 e0       	ldi	r19, 0x00	; 0
+  ba:	f9 01       	movw	r30, r18
+  bc:	20 81       	ld	r18, Z
+  be:	26 60       	ori	r18, 0x06	; 6
+  c0:	fc 01       	movw	r30, r24
+  c2:	20 83       	st	Z, r18
+
+000000c4 <.LM6>:
+TCCR1A |= 2 << 6; // enable PWM on port B1 in non-inverted compare mode 2
+  c4:	80 e8       	ldi	r24, 0x80	; 128
+  c6:	90 e0       	ldi	r25, 0x00	; 0
+  c8:	20 e8       	ldi	r18, 0x80	; 128
+  ca:	30 e0       	ldi	r19, 0x00	; 0
+  cc:	f9 01       	movw	r30, r18
+  ce:	20 81       	ld	r18, Z
+  d0:	20 68       	ori	r18, 0x80	; 128
+  d2:	fc 01       	movw	r30, r24
+  d4:	20 83       	st	Z, r18
+
+000000d6 <.LM7>:
+TCCR1A |= 2 << 4; // enable PWM on port B2 in non-inverted compare mode 2
+  d6:	80 e8       	ldi	r24, 0x80	; 128
+  d8:	90 e0       	ldi	r25, 0x00	; 0
+  da:	20 e8       	ldi	r18, 0x80	; 128
+  dc:	30 e0       	ldi	r19, 0x00	; 0
+  de:	f9 01       	movw	r30, r18
+  e0:	20 81       	ld	r18, Z
+  e2:	20 62       	ori	r18, 0x20	; 32
+  e4:	fc 01       	movw	r30, r24
+  e6:	20 83       	st	Z, r18
+
+000000e8 <.LM8>:
+
+OCR1A = ICR1 * 500 /20; // 2ms pulse to left motor on PB1
+  e8:	48 e8       	ldi	r20, 0x88	; 136
+  ea:	50 e0       	ldi	r21, 0x00	; 0
+  ec:	86 e8       	ldi	r24, 0x86	; 134
+  ee:	90 e0       	ldi	r25, 0x00	; 0
+  f0:	fc 01       	movw	r30, r24
+  f2:	60 81       	ld	r22, Z
+  f4:	71 81       	ldd	r23, Z+1	; 0x01
+  f6:	24 ef       	ldi	r18, 0xF4	; 244
+  f8:	31 e0       	ldi	r19, 0x01	; 1
+  fa:	62 9f       	mul	r22, r18
+  fc:	c0 01       	movw	r24, r0
+  fe:	63 9f       	mul	r22, r19
+ 100:	90 0d       	add	r25, r0
+ 102:	72 9f       	mul	r23, r18
+ 104:	90 0d       	add	r25, r0
+ 106:	11 24       	eor	r1, r1
+ 108:	9c 01       	movw	r18, r24
+ 10a:	ad ec       	ldi	r26, 0xCD	; 205
+ 10c:	bc ec       	ldi	r27, 0xCC	; 204
+ 10e:	0e 94 af 00 	call	0x15e	; 0x15e <__umulhisi3>
+ 112:	92 95       	swap	r25
+ 114:	82 95       	swap	r24
+ 116:	8f 70       	andi	r24, 0x0F	; 15
+ 118:	89 27       	eor	r24, r25
+ 11a:	9f 70       	andi	r25, 0x0F	; 15
+ 11c:	89 27       	eor	r24, r25
+ 11e:	fa 01       	movw	r30, r20
+ 120:	91 83       	std	Z+1, r25	; 0x01
+ 122:	80 83       	st	Z, r24
+
+00000124 <.LM9>:
+OCR1B = ICR1 * 5 /20; // 2ms pulse to right motor on PB2
+ 124:	4a e8       	ldi	r20, 0x8A	; 138
+ 126:	50 e0       	ldi	r21, 0x00	; 0
+ 128:	86 e8       	ldi	r24, 0x86	; 134
+ 12a:	90 e0       	ldi	r25, 0x00	; 0
+ 12c:	fc 01       	movw	r30, r24
+ 12e:	20 81       	ld	r18, Z
+ 130:	31 81       	ldd	r19, Z+1	; 0x01
+ 132:	c9 01       	movw	r24, r18
+ 134:	88 0f       	add	r24, r24
+ 136:	99 1f       	adc	r25, r25
+ 138:	88 0f       	add	r24, r24
+ 13a:	99 1f       	adc	r25, r25
+ 13c:	82 0f       	add	r24, r18
+ 13e:	93 1f       	adc	r25, r19
+ 140:	9c 01       	movw	r18, r24
+ 142:	ad ec       	ldi	r26, 0xCD	; 205
+ 144:	bc ec       	ldi	r27, 0xCC	; 204
+ 146:	0e 94 af 00 	call	0x15e	; 0x15e <__umulhisi3>
+ 14a:	92 95       	swap	r25
+ 14c:	82 95       	swap	r24
+ 14e:	8f 70       	andi	r24, 0x0F	; 15
+ 150:	89 27       	eor	r24, r25
+ 152:	9f 70       	andi	r25, 0x0F	; 15
+ 154:	89 27       	eor	r24, r25
+ 156:	fa 01       	movw	r30, r20
+ 158:	91 83       	std	Z+1, r25	; 0x01
+ 15a:	80 83       	st	Z, r24
+
+0000015c <.L2>:
+// do nothing - the hardware is pumping out 2ms pulses every 20ms to the servos on PB1 and PB2
+
+
+
+// for a differential drive robot the motors are on each side of the robot so the robot should be spinning around its midpoint
+}
+ 15c:	ff cf       	rjmp	.-2      	; 0x15c <.L2>
+
+0000015e <__umulhisi3>:
+ 15e:	a2 9f       	mul	r26, r18
+ 160:	b0 01       	movw	r22, r0
+ 162:	b3 9f       	mul	r27, r19
+ 164:	c0 01       	movw	r24, r0
+ 166:	a3 9f       	mul	r26, r19
+ 168:	01 d0       	rcall	.+2      	; 0x16c <__umulhisi3+0xe>
+ 16a:	b2 9f       	mul	r27, r18
+ 16c:	70 0d       	add	r23, r0
+ 16e:	81 1d       	adc	r24, r1
+ 170:	11 24       	eor	r1, r1
+ 172:	91 1d       	adc	r25, r1
+ 174:	08 95       	ret
+
+00000176 <_exit>:
+ 176:	f8 94       	cli
+
+00000178 <__stop_program>:
+ 178:	ff cf       	rjmp	.-2      	; 0x178 <__stop_program>
